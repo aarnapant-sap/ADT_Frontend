@@ -306,7 +306,7 @@ public class TestPdeAbapGitObjectSelectionPage {
     @SuppressWarnings("unchecked")
     private Set<IRepositoryModifiedObjects> getFilteredRepositories() {
         try {
-            java.lang.reflect.Field field = AbapGitWizardPageObjectsSelectionForPull.class.getDeclaredField("filteredRepositories");
+            java.lang.reflect.Field field = AbapGitWizardPageObjectsSelectionForPull.class.getDeclaredField("filteredRepositoryObjects");
             field.setAccessible(true);
             return (Set<IRepositoryModifiedObjects>) field.get(wizardPage);
         } catch (Exception e) {
