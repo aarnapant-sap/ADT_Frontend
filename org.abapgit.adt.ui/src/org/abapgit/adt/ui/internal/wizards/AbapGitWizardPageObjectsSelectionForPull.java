@@ -85,7 +85,7 @@ public class AbapGitWizardPageObjectsSelectionForPull extends WizardPage {
 		// Search field
 		this.searchField = new Text(mainContainer, SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL);
 		this.searchField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		this.searchField.setMessage(Messages.AbapGitWizardPageObjectsSelectionForPull_SearchField_Placeholder);
+		this.searchField.setMessage(Messages.AbapGitWizardPageObjectsSelectionForPull_filter_Placeholder);
 
 		// Tree container with TreeColumnLayout
 		this.treeColumnLayout = new TreeColumnLayout();
@@ -509,7 +509,8 @@ public class AbapGitWizardPageObjectsSelectionForPull extends WizardPage {
 	}
 
 	/**
-	 * Check if an object matches the search text in name, package, or type fields.
+	 * Check if an object matches the search text in name, package or type
+	 * fields.
 	 */
 	private boolean matchesSearch(IOverwriteObject obj) {
 		if (this.searchText.isEmpty()) {
