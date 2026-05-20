@@ -16,5 +16,5 @@ public interface IAbapGitRepositoriesView {
 	/**
 	 * Returns the project currently loaded.
 	 */
-	public IProject getProject();
+	public IProject getLastProject();
 }
