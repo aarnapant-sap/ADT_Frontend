@@ -63,7 +63,7 @@ public class SwitchbranchAction extends Action {
 	}
 
 	private IProject getProject() {
-		return this.AbapGitView.getLastProject();
+		return this.AbapGitView.getProject();
 	}
 
 }
