@@ -1,6 +1,7 @@
 name: Automated Tycho Build and Update Site Release
 
 on:
+  push:
   workflow_dispatch:
     inputs:
       release_tag:
