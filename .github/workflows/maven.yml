@@ -53,10 +53,13 @@ jobs:
             git add .
             git commit -m "Bump Tycho project version to ${{ steps.get_version.outputs.VERSION }} [skip ci]"
             
-            # Note: Since checking out a tag puts git in a detached HEAD state, 
-            # we push back to a specific target branch (e.g., main) or your tracking branch.
-            # Replace 'main' with your default branch name if it differs.
-            git push origin HEAD:main
+            # Extract the raw input branch/tag name (e.g., v1.7.13 or release-1.7)
+            TARGET_REF="${{ github.event.inputs.release_tag }}"
+            
+            echo "Pushing updated version files back to origin tracking reference: ${TARGET_REF}"
+            
+            # Push HEAD directly to the matching branch name on origin
+            git push origin HEAD:${TARGET_REF}
           else
             echo "No version changes detected."
           fi
