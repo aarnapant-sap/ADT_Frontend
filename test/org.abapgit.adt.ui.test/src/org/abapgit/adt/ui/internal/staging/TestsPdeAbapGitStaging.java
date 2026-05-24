@@ -751,11 +751,11 @@ public class TestsPdeAbapGitStaging {
 		e.character = 'C' | 'c';
 		
 		String OS = System.getProperty("os.name").toLowerCase();
-		if(OS.contains("win"))
-		e.stateMask = SWT.CTRL;
 		
 		if(OS.contains("mac"))
 			e.stateMask = SWT.COMMAND;
+		else
+			e.stateMask = SWT.CTRL;
 		
 		e.widget = view.unstagedTreeViewer.getTree();
 		KeyEvent keyEvent = new KeyEvent(e);
