@@ -117,6 +117,8 @@ public class AbapGitWizardSelectivePullAfterLink extends Wizard {
 						page.setMessage(e.getMessage(), DialogPage.ERROR);
 					});
 					return new Status(IStatus.ERROR, AbapGitUIPlugin.PLUGIN_ID, e.getMessage(), e);
+				} finally {
+					monitor.done();
 				}
 			}
 
@@ -126,8 +128,7 @@ public class AbapGitWizardSelectivePullAfterLink extends Wizard {
 					if (!apackDependency.requiresSynchronization()) {
 						continue;
 					}
-					IRepository dependencyRepository = RepositoryServiceFactory
-							.createRepositoryService(AbapGitWizardSelectivePullAfterLink.this.destination, monitor)
+					IRepository dependencyRepository = AbapGitWizardSelectivePullAfterLink.this.repoService
 							.getRepositoryByURL(repoService.getRepositories(monitor), apackDependency.getGitUrl());
 
 					if (dependencyRepository != null) {

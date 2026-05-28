@@ -294,22 +294,7 @@ public class RepositoryService implements IRepositoryService {
 	@Override
 	public IAbapObjects pullRepository(IRepository existingRepository, String branch, String transportRequest, String user, String password,
 			IAbapGitPullModifiedObjects selectedObjectsToPull, IProgressMonitor monitor) {
-		IRestResource restResource = null;
-		URI uriToRepo = null;
-		if (isBackgroundJobSupported(monitor)) {
-			uriToRepo = getURIFromAtomLink(existingRepository, IRepositoryService.RELATION_PULL_WITH_BG_RUN);
-			if (uriToRepo != null) {
-				restResource = getBackgroundRestResource(uriToRepo.getPath(), this.destinationId, monitor);
-			}
-		}
-		if (restResource == null) {
-			uriToRepo = getURIFromAtomLink(existingRepository, IRepositoryService.RELATION_PULL);
-			restResource = AdtRestResourceFactory.createRestResourceFactory().createResourceWithStatelessSession(uriToRepo,
-					this.destinationId);
-		}
-		if (restResource == null) {
-			throw new IllegalStateException("Unable to create REST resource for pull operation."); //$NON-NLS-1$
-		}
+		IRestResource restResource = createPullRestResource(existingRepository, monitor);
 		IContentHandler<IAbapGitPullRequest> requestContentHandlerV1 = new AbapGitPullRequestContentHandler();
 		restResource.addContentHandler(requestContentHandlerV1);
 
@@ -342,6 +327,20 @@ public class RepositoryService implements IRepositoryService {
 		restResource.addResponseFilter(responseCompatibilityFilter);
 
 		return restResource.post(monitor, IAbapObjects.class, abapGitPullReq);
+	}
+
+	private IRestResource createPullRestResource(IRepository existingRepository, IProgressMonitor monitor) {
+		if (isBackgroundJobSupported(monitor)) {
+			URI bgUri = getURIFromAtomLink(existingRepository, IRepositoryService.RELATION_PULL_WITH_BG_RUN);
+			if (bgUri != null) {
+				return getBackgroundRestResource(bgUri.getPath(), this.destinationId, monitor);
+			}
+		}
+		URI pullUri = getURIFromAtomLink(existingRepository, IRepositoryService.RELATION_PULL);
+		if (pullUri == null) {
+			throw new IllegalStateException("Unable to create REST resource for pull operation."); //$NON-NLS-1$
+		}
+		return AdtRestResourceFactory.createRestResourceFactory().createResourceWithStatelessSession(pullUri, this.destinationId);
 	}
 
 	@Override

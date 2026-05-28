@@ -159,6 +159,7 @@ public class AbapGitWizardPull extends Wizard {
 		Set<IRepositoryModifiedObjects> overwriteObjects = AbapGitWizardPull.this.pageOverwriteObjectsSelection.getSelectedObjects();
 		Set<IRepositoryModifiedObjects> packageWarningObjects = AbapGitWizardPull.this.pagePackageWarningObjectsSelection
 				.getSelectedObjects();
+		String transportRequestNumber = AbapGitWizardPull.this.transportPage.getTransportRequestNumber();
 
 		Job pullRepoJob = new Job(Messages.AbapGitWizard_task_pulling_repository) {
 			@Override
@@ -175,7 +176,7 @@ public class AbapGitWizardPull extends Wizard {
 
 					// Pull the selected objects
 					repoService.pullRepository(AbapGitWizardPull.this.selRepoData, AbapGitWizardPull.this.selRepoData.getBranchName(),
-							AbapGitWizardPull.this.transportPage.getTransportRequestNumber(), AbapGitWizardPull.this.cloneData.user,
+							transportRequestNumber, AbapGitWizardPull.this.cloneData.user,
 							AbapGitWizardPull.this.cloneData.pass,
 							AbapGitWizardPull.this.repoToSelectedObjects.get(AbapGitWizardPull.this.selRepoData.getUrl()), monitor);
 
@@ -188,6 +189,7 @@ public class AbapGitWizardPull extends Wizard {
 				} catch (ResourceException e) {
 					return new Status(IStatus.ERROR, AbapGitUIPlugin.PLUGIN_ID, e.getMessage(), e);
 				} finally {
+					monitor.done();
 					PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
 						AbapGitWizardPull.this.abapGitView.refresh();
 					});
@@ -201,7 +203,7 @@ public class AbapGitWizardPull extends Wizard {
 								apackDependency.getGitUrl());
 						if (dependencyRepository != null) {
 							repoService.pullRepository(dependencyRepository, IApackManifest.MASTER_BRANCH,
-									AbapGitWizardPull.this.transportPage.getTransportRequestNumber(), AbapGitWizardPull.this.cloneData.user,
+									transportRequestNumber, AbapGitWizardPull.this.cloneData.user,
 									AbapGitWizardPull.this.cloneData.pass,
 									AbapGitWizardPull.this.repoToSelectedObjects.get(dependencyRepository.getUrl()), monitor);
 						}
@@ -213,6 +215,7 @@ public class AbapGitWizardPull extends Wizard {
 
 		pullRepoJob.setUser(true); // Shows the job in progress view
 		pullRepoJob.schedule();
+
 
 		return true;
 
