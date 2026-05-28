@@ -518,13 +518,13 @@ public class AbapGitWizardPageObjectsSelectionForPull extends WizardPage {
 		}
 
 		// null description is mapped to "modify object locally" as it's the default action description shown in the UI
-		String description = obj.getActionDescription() != null ? obj.getActionDescription().toLowerCase(Locale.ENGLISH)
+		String actionDescription = obj.getActionDescription() != null ? obj.getActionDescription().toLowerCase(Locale.ENGLISH)
 				: "modify object locally"; //$NON-NLS-1$
 		String name = obj.getName() != null ? obj.getName().toLowerCase(Locale.ENGLISH) : ""; //$NON-NLS-1$
 		String packageName = obj.getPackageName() != null ? obj.getPackageName().toLowerCase(Locale.ENGLISH) : ""; //$NON-NLS-1$
 		String type = obj.getType() != null ? obj.getType().toLowerCase(Locale.ENGLISH) : ""; //$NON-NLS-1$
 
 		return name.contains(this.searchText) || packageName.contains(this.searchText) || type.contains(this.searchText)
-				|| description.contains(this.searchText);
+				|| actionDescription.contains(this.searchText);
 	}
 }
